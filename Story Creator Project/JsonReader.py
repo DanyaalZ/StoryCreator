@@ -21,4 +21,4 @@ class JsonReader:
     
     #get a result for a particular column
     def get_column(self, column_name:str) -> str:
-        return self.json_text["column_name"]
+        return self.json_text[column_name]

@@ -32,22 +32,10 @@ class StoryCreator(NaturalLanguageProcessor):
         """ Story to process """
         self.story: str = ""
 
-        """ Character model - taken from what is generated in user preferences (stored in json)"""
-        self.character: Character = character
-
-        """ Prompt model  - taken from what is generated in user preferences (stored in json)"""
+        """ Prompt model  - taken from what is generated in user preferences (stored in json), including character data"""
         self.prompt: Prompt = prompt
 
-        """ Set up story"""
-        self.setup_story()
         
-
-    #def setup_story(self):
-        #set up gender of main character
-       
-    """ Generate story """
-    def generate_prompt(self):
-        pass
 
     #TO GENERATE STORY - CHANGE WHEN READY
     def generate_story(self, prompt: str) -> str:
