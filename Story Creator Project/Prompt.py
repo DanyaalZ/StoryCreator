@@ -10,33 +10,34 @@ class Prompt:
         self.character = character
         self.read_prompt_data = story_profile
 
-        #the final prompt to be read
-        self.final_prompt = ""
-
         #story scenario, build, climax and conclusion
         self.scenario: str = self.get_scenario()
         self.build: str = self.get_build()
         self.climax: str = self.get_climax()
         self.conclusion: str = self.get_conclusion()
 
-        
-        #tools to overcome or aid problem (optional)
-        self.tools: Optional[list] = []
+        #tools to overcome or aid problem (optional, defined by GetTools? column in json)
+        self.tools: Optional[list] = self.get_tools(self.read_prompt_data("GetTools?"))
 
+        #the final prompt to be read
+        self.final_prompt = ""
+
+    def create_final_prompt(self) -> str:
+        return f"Write a story where {self.scenario} occurs. The  "
 
     #get given scenario data, if nothing is given default to 'surprise me' type story
-    def get_scenario(self):
+    def get_scenario(self) -> str:
         scenario = self.read_prompt_data.get_column("Scenario")
 
         #make sure scenario is present else create random story
         if scenario == "":
-            return "a random scenario occurs - it could be positive or negative, but should be respectful."
+            return "a random scenario - it could be positive or negative, but should be respectful"
 
         else:
             return scenario    
 
     #same for build of story (story builds up)
-    def get_build(self):
+    def get_build(self) -> str:
         build = self.read_prompt_data.get_column("Build")
 
         #make sure build is present
@@ -47,7 +48,7 @@ class Prompt:
             return build
         
     #same for climax of story (story reaches max point of tension/suspense or positive infliction)
-    def get_climax(self):
+    def get_climax(self) -> str:
         climax = self.read_prompt_data.get_column("Climax")
 
         #make sure climax is present
@@ -58,7 +59,7 @@ class Prompt:
             return climax
         
     #same for conclusion of story (story concludes)
-    def get_conclusion(self):
+    def get_conclusion(self) -> str:
         conclusion = self.read_prompt_data.get_column("Conclusion")
 
         #make sure conclusion is present
@@ -67,3 +68,12 @@ class Prompt:
 
         else:
             return conclusion
+        
+     
+    #get tools as a list if they are included
+    def get_tools(self, tools_included: str) -> Optional[list]:
+        if tools_included == "True":
+            return lambda: self.read_prompt_data("Tools").split(", ") 
+        
+        else:
+            return None

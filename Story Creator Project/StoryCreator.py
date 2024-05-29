@@ -26,8 +26,8 @@ class NaturalLanguageProcessor:
 """This class is responsible for creating the story the user sees, and for building the prompt with information given by the user
 to start and then further the story """
 class StoryCreator(NaturalLanguageProcessor):
-    def __init__(self, character: Character, prompt: Prompt):
-        super().__init__()
+    def __init__(self, prompt: Prompt):
+        super().__init__(self)
 
         """ Story to process """
         self.story: str = ""
