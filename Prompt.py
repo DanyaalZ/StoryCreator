@@ -17,13 +17,15 @@ class Prompt:
         self.conclusion: str = self.get_conclusion()
 
         #tools to overcome or aid problem (optional, defined by GetTools? column in json)
-        self.tools: Optional[list] = self.get_tools(self.read_prompt_data("GetTools?"))
+        self.decide_tools: bool = self.decide_tools(self.read_prompt_data("GetTools?"))
+        #potential tools list
+        self.tools: Optional[list] = []
 
         #the final prompt to be read
         self.final_prompt = ""
 
     def create_final_prompt(self) -> str:
-        return f"Write a story where {self.scenario} occurs. The  "
+        return f"Write a story where {self.scenario} occurs. {self.build} {self.climax} {self.conclusion} If this given list is not empty, the tools within it are used to amplify the resolve of the character in the story."
 
     #get given scenario data, if nothing is given default to 'surprise me' type story
     def get_scenario(self) -> str:
@@ -68,12 +70,13 @@ class Prompt:
 
         else:
             return conclusion
-        
      
-    #get tools as a list if they are included
-    def get_tools(self, tools_included: str) -> Optional[list]:
+    #decide to use tools or not
+    def decide_tools(self, tools_included: str) -> Optional[list]:
         if tools_included == "True":
-            return lambda: self.read_prompt_data("Tools").split(", ") 
-        
-        else:
-            return None
+            return True
+
+    #if tools are decided to be used, use them
+    def get_tools(self):
+       if self.decide_tools:
+           self.tools = lambda: self.read_prompt_data("Tools").split(", ") 

@@ -23,6 +23,8 @@ class NaturalLanguageProcessor:
 
 
 
+
+
 """This class is responsible for creating the story the user sees, and for building the prompt with information given by the user
 to start and then further the story """
 class StoryCreator(NaturalLanguageProcessor):
@@ -35,14 +37,14 @@ class StoryCreator(NaturalLanguageProcessor):
         """ Prompt model  - taken from what is generated in user preferences (stored in json), including character data"""
         self.prompt: Prompt = prompt
 
-        
-
-    #TO GENERATE STORY - CHANGE WHEN READY
-    def generate_story(self, prompt: str) -> str:
+    def create_story(self, prompt: str):
         inputs = self.tokenizer.encode(prompt, return_tensors='pt')
         outputs = self.model.generate(inputs, max_length=500, num_return_sequences=1, pad_token_id=self.tokenizer.eos_token_id)
         story = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+
         return story
+        
+
 
     
     
